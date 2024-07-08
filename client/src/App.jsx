@@ -1,12 +1,19 @@
-import React from 'react'
-import { Button } from './components/ui/button'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 const App = () => {
   return (
-    <div>App
-    <Button/>
+    <Router>
 
-    </div>
+      <Routes>
+
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+
+      </Routes>
+
+    </Router>
   )
 }
 
