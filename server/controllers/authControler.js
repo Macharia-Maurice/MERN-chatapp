@@ -1,10 +1,7 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/userModel')
+const { generateAccessToken, generateRefreshToken} = require('../services/authService')
 const createError = require('../utils/appError');
-
-const secret= process.env.JWT_SECRET
-
 
 // register user
 exports.register = async (req, res, next)=>{
@@ -16,33 +13,29 @@ exports.register = async (req, res, next)=>{
 
     try{
 
-        let user = await User.findOne({ email });
-        if (user) return next( new createError('User already exists', 400))
+        const user = await User.findOne({ email });
+        if (user) return next( new createError('User already exists', 400));
 
         const hashedPassword = await bcrypt.hash(password, 8);
 
-        user = new User({
+        await User.create({
             first_name,
             last_name,
             email,
             password: hashedPassword,
         });
-        await user.save();
 
-        // assign jwt to user
-        const token = jwt.sign({ id: user.id }, secret , { expiresIn: '1d'});
- 
         res
         .status(201)
         .json({
             status: 'success',
             message: 'user registered successfully',
-            token,
             user,
         });
         
 
-    }catch{
+    }catch (err){
+        console.error("Register error:", err)
         next( new createError('Server error', 500))
     }
 };
@@ -70,8 +63,12 @@ exports.login = async (req, res, next) => {
             return next(new createError('Invalid credentials', 400));
         }
 
-        // Assign JWT token to user
-        const token = jwt.sign({ id: user.id }, secret, { expiresIn: '1d' });
+        // generate JWT token for the user
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
 
         res
             .status(201)
@@ -84,5 +81,31 @@ exports.login = async (req, res, next) => {
     } catch (err) {
         console.error('Login Error:', err); // Log the error details
         next(new createError('Server error', 500));
+    }
+};
+
+
+//logout user
+exports.logout = async (req, res) => {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    res.sendStatus(200);
+};
+ 
+// use refresh token to get new access token
+exports.refreshToken = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.sendStatus(401);
+    }
+
+    try {
+        const user = await verifyRefreshToken(refreshToken);
+        const newAccessToken = generateAccessToken(user);
+        res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true });
+        res.sendStatus(200);
+    } catch (err) {
+        res.sendStatus(403);
     }
 };
