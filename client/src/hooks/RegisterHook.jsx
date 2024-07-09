@@ -27,7 +27,7 @@ const useRegister = () => {
             last_name,
             email,
             password,
-            re_password
+            confirm_password
         } = data
 
         try {
@@ -38,14 +38,14 @@ const useRegister = () => {
                 last_name,
                 email,
                 password,
-                re_password
+                confirm_password
             })
             console.log(response.data)
             navigate('/dashboard')
 
         } catch (err) {
             console.error(err);
-            setError(err.response?.data?.message || 'Register failed');
+            setError(err.response?.data?.message || 'Registration failed');
 
         } finally {
 
