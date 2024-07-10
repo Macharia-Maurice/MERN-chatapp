@@ -8,13 +8,19 @@ const authRouter = require('./routes/authRoutes');
 
 const app = express();
 
+// Allow requests from frontend origin
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  credentials: true, // Required to allow cookies with credentials
+};
+
 // middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
 
 // routes
-app.use('/api/auth', authRouter);
+app.use('/auth', authRouter);
 
 
 // MongoDB connection
