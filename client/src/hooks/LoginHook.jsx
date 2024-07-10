@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schema/LoginSchema";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import axios from "axios";
+import axios from "../utils/axiosConfig";
+import Cookies from "js-cookie";
 
 const useLogin = () =>{
     const form = useForm({
@@ -24,8 +25,12 @@ const useLogin = () =>{
         try{
             setIsLoading(true);
             setError(null);
-            const response = await axios.post('http://localhost:2000/api/auth/login', { email, password });
-            console.log(response.data)
+            const response = await axios.post('/auth/login', { email, password });
+
+            // set cookies
+            Cookies.set('accessToken', response.data.accessToken, { expires: 1})
+            Cookies.set('refreshToken', response.data.refreshToken, { expires: 7})
+
             navigate('/dashboard')
 
         }catch (err){
