@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/schema/RegisterSchema";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../utils/axiosConfig";
 
 const useRegister = () => {
     const form = useForm({
@@ -33,7 +33,7 @@ const useRegister = () => {
         try {
             setIsLoading(true);
             setError(null);
-            const response = await axios.post('http://localhost:2000/api/auth/register', {
+            const response = await axios.post('auth/register', {
                 first_name,
                 last_name,
                 email,
@@ -41,7 +41,7 @@ const useRegister = () => {
                 confirm_password
             })
             console.log(response.data)
-            navigate('/dashboard')
+            navigate('/login')
 
         } catch (err) {
             console.error(err);
