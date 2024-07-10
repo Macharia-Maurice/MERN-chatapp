@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;  // Corrected to use REFRESH_TOKEN_SECRET
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
 // Function to generate access token
 exports.generateAccessToken = (user) => {
