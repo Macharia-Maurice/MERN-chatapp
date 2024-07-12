@@ -1,54 +1,50 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schema/LoginSchema";
+import { useLoginMutation } from "@/redux/features/auth/authApiSlice";
+import { setAuth } from "@/redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
-import axios from "../utils/axiosConfig";
-import Cookies from "js-cookie";
 
-const useLogin = () =>{
+const useLogin = () => {
     const form = useForm({
-        resolver:zodResolver(LoginSchema),
-        defaultValues:{
-            email:"",
-            password:"",
+        resolver: zodResolver(LoginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
         },
     });
 
     const navigate = useNavigate();
-    const [ isLoading, setIsLoading ] = useState(false);
-    const [ error, setError ] = useState(null);
+    const dispatch = useDispatch();
+    const [login, { isLoading, error }] = useLoginMutation();
 
-    const handleSubmit = async (data) =>{
+    const onSubmit = async (data) => {
         const { email, password } = data;
 
-        try{
-            setIsLoading(true);
-            setError(null);
-            const response = await axios.post('/auth/login', { email, password });
+        try {
+            const response = await login({ email, password }).unwrap();
+            
+            // Check if response contains the access token
+            if (response.accessToken) {
 
-            // set cookies
-            Cookies.set('accessToken', response.data.accessToken, { expires: 1})
-            Cookies.set('refreshToken', response.data.refreshToken, { expires: 7})
-
-            navigate('/dashboard')
-
-        }catch (err){
-            console.error(err);
-            setError(err.response?.data?.message || 'Login failed');
-
-        }finally{
-
-            setIsLoading(false)
+                dispatch(setAuth(true));
+                navigate('/dashboard');
+            } else {
+                console.error("Login error: No access token in response", response);
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            console.log(error)
         }
     };
 
-    return{
-        handleSubmit,
+    return {
+        handleSubmit: form.handleSubmit(onSubmit),
         form,
         isLoading,
         error
     };
-}
+};
 
 export default useLogin;
