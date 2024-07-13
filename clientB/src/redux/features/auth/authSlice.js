@@ -7,17 +7,15 @@ const initialState = {
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState,  // Corrected this line
+    initialState,
     reducers: {
-
         setAuth: (state) => {
             state.isAuthenticated = true;
+            state.isLoading = false;
         },
-
         logout: (state) => {
             state.isAuthenticated = false;
         },
-
         finishInitialLoading: (state) => {
             state.isLoading = false;
         }
@@ -25,5 +23,4 @@ const authSlice = createSlice({
 });
 
 export const { setAuth, logout, finishInitialLoading } = authSlice.actions;
-
 export default authSlice.reducer;
