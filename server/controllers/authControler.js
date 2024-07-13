@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/userModel')
 const { generateAccessToken, generateRefreshToken} = require('../services/authService')
 const createError = require('../utils/appError');
+const { verifyRefreshToken } = require('../services/authService')
 
 // register user
 exports.register = async (req, res, next)=>{
@@ -89,23 +90,24 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res) => {
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
-    res.sendStatus(200);
-};
+    res.status(200).json({ status: 'success', message: 'Logged out successfully' });};
  
 // use refresh token to get new access token
 exports.refreshToken = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        return res.sendStatus(401);
+        return res.status(401).json({ error: 'No refresh token found' });
     }
 
     try {
         const user = await verifyRefreshToken(refreshToken);
         const newAccessToken = generateAccessToken(user);
         res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true });
-        res.sendStatus(200);
+        console.log('New access token issued:', newAccessToken);
+        res.status(200).json({ status: 'success', accessToken: newAccessToken });
     } catch (err) {
-        res.sendStatus(403);
+        console.error('Error verifying refresh token:', err);
+        res.status(403).json({ error: 'Failed to verify refresh token' });
     }
 };
