@@ -10,7 +10,7 @@ const app = express();
 
 // Allow requests from frontend origin
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL,
   credentials: true, // Required to allow cookies with credentials
 };
 
@@ -26,8 +26,8 @@ app.use('/auth', authRouter);
 // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => {console.log('Connected to MongoDB')})
-  .catch((error) => {console.error('Error connecting to MongoDB:', error);});
+  .then(() => { console.log('Connected to MongoDB') })
+  .catch((error) => { console.error('Error connecting to MongoDB:', error); });
 
 
 // global error handler
@@ -37,6 +37,6 @@ app.use(errorHandler);
 // server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
