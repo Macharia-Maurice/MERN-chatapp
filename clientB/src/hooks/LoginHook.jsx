@@ -28,7 +28,7 @@ const useLogin = () => {
             // Check if response contains the access token
             if (response.accessToken) {
 
-                dispatch(setAuth(true));
+                dispatch(setAuth());
                 navigate('/dashboard');
             } else {
                 console.error("Login error: No access token in response", response);
