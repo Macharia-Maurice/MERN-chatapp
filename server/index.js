@@ -1,18 +1,16 @@
-require('dotenv').config();
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const cookieParser = require('cookie-parser')
-const errorHandler = require('./middleware/errorHandler');
-const authRouter = require('./routes/authRoutes');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const errorHandler = require("./middleware/errorHandler");
+const authRouter = require("./routes/authRoutes");
+const corsOptions = require("./config/corsOptions.js");
+const connectDB = require("./config/DBConnect.js");
 
 const app = express();
 
-// Allow requests from frontend origin
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true, // Required to allow cookies with credentials
-};
+connectDB();
 
 // middlewares
 app.use(cors(corsOptions));
@@ -20,23 +18,23 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use('/auth', authRouter);
-
-
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => { console.log('Connected to MongoDB') })
-  .catch((error) => { console.error('Error connecting to MongoDB:', error); });
-
+app.use("/auth", authRouter);
 
 // global error handler
 app.use(errorHandler);
 
+// listen to port once connection to mongodb is successful
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB");
 
-// server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  // server
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
 
+// listen for mongodb connection error
+mongoose.connection.on("error", (err) => {
+  console.log(err);
+});
