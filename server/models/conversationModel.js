@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const model = mongoose.model;
 
+// Define the Message schema
 const messageSchema = new Schema(
   {
     text: {
@@ -21,35 +22,35 @@ const messageSchema = new Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true } // Automatically manage createdAt and updatedAt fields
 );
 
+// Define the Conversation schema
 const conversationSchema = new Schema(
   {
     sender: {
-      type: Schema.ObjectId,
-      ref: "User",
+      type: Schema.Types.ObjectId,
+      ref: "UserProfile",
       required: true,
     },
     receiver: {
-      type: Schema.ObjectId,
-      ref: "User",
+      type: Schema.Types.ObjectId,
+      ref: "UserProfile",
       required: true,
     },
     messages: [
       {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Message",
       },
     ],
   },
-
-  { timestamps: true }
+  { timestamps: true } // Automatically manage createdAt and updatedAt fields
 );
 
+// Create models from the schemas
+const Message = model("Message", messageSchema);
+const Conversation = model("Conversation", conversationSchema);
 
-const messageModel = model("Message", messageSchema);
-
-const conversationModel = model("Conversation", conversationSchema);
-
-module.exports = { conversationModel, messageModel };
+// Export the models
+module.exports = { Conversation, Message };
