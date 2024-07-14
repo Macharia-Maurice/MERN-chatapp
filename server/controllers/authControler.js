@@ -15,12 +15,12 @@ exports.register = async (req, res, next) => {
     return next(new createError("Passwords do not match", 400));
 
   try {
-    const user = await User.findOne({ email });
-    if (user) return next(new createError("Enter a valid email", 400));
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return next(new createError("Enter a valid email", 400));
 
     const hashedPassword = await bcrypt.hash(password, 8);
 
-    await User.create({
+    const newUser = await User.create({
       first_name,
       last_name,
       email,
@@ -30,7 +30,12 @@ exports.register = async (req, res, next) => {
     res.status(201).json({
       status: "success",
       message: "user registered successfully",
-      user,
+      user: {
+        id: newUser._id,
+        first_name: newUser.first_name,
+        last_name: newUser.last_name,
+        email: newUser.email,
+      },
     });
   } catch (err) {
     console.error("Register error:", err);
