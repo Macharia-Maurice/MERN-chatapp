@@ -2,16 +2,26 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const model = mongoose.model;
 
+// Define the UserProfile schema
 const userProfileSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    profilePicture: { type: String }, // url to path of image
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    profilePicture: {
+      type: String,
+      default: "", // Adding a default value can be helpful
+    },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically manage createdAt and updatedAt fields
   }
 );
 
-const userProfileModel = model("UserProfile", userProfileSchema);
+// Create the UserProfile model
+const UserProfile = model("UserProfile", userProfileSchema);
 
-module.exports = userProfileModel;
+// Export the UserProfile model
+module.exports = UserProfile;
