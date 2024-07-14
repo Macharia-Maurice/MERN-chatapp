@@ -28,6 +28,17 @@ const UserSchema = new Schema(
   }
 );
 
+// Middleware to create a UserProfile after a User is created
+UserSchema.post("save", async function (doc, next) {
+  try {
+    const UserProfile = model("UserProfile");
+    await UserProfile.create({ user: doc._id });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Create and export the User model
 const User = model("User", UserSchema);
 
