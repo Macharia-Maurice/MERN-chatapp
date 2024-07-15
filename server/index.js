@@ -4,9 +4,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middleware/errorHandler");
-const authRouter = require("./routes/authRoutes");
 const corsOptions = require("./config/corsOptions.js");
 const connectDB = require("./config/DBConnect.js");
+const authRouter = require("./routes/authRoutes");
+const userProfileRouter = require("./routes/userprofileRoutes.js")
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/auth", authRouter);
+app.use('/profile', userProfileRouter)
 
 // global error handler
 app.use(errorHandler);
@@ -38,3 +40,4 @@ mongoose.connection.once("open", () => {
 mongoose.connection.on("error", (err) => {
   console.log(err);
 });
+
