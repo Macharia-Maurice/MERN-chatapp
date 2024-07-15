@@ -39,56 +39,56 @@ exports.listAllProfiles = async (req, res, next) => {
 };
 
 
-// for current logged in user
-exports.getUserProfile = async (req, res, next) => {
-  const userId = req.user.id;
-  console.log("Authenticated User ID:", userId);
-  try {
-    const userProfile = await UserProfile.findOne({ user: userId }).populate(
-      "user"
-    );
+// // for current logged in user
+// exports.getUserProfile = async (req, res, next) => {
+//   const userId = req.user.id;
+//   console.log("Authenticated User ID:", userId);
+//   try {
+//     const userProfile = await UserProfile.findOne({ user: userId }).populate(
+//       "user"
+//     );
 
-    if (!userProfile) {
-      return next(new createError("User profile not found", 404));
-    }
+//     if (!userProfile) {
+//       return next(new createError("User profile not found", 404));
+//     }
 
-    res.status(200).json({
-      status: "success",
-      userProfile,
-    });
-  } catch (err) {
-    console.error("Error getting user profile:", err);
-    next(new createError("Internal server error", 500));
-  }
-};
+//     res.status(200).json({
+//       status: "success",
+//       userProfile,
+//     });
+//   } catch (err) {
+//     console.error("Error getting user profile:", err);
+//     next(new createError("Internal server error", 500));
+//   }
+// };
 
 
-// update the userProfile
-exports.updateUserProfile = async (req, res, next) => {
-  const userId = req.user.id;
-  console.log("Authenticated User ID:", userId);
-  const { profilePicture } = req.body;
+// // update the userProfile
+// exports.updateUserProfile = async (req, res, next) => {
+//   const userId = req.user.id;
+//   console.log("Authenticated User ID:", userId);
+//   const { profilePicture } = req.body;
 
-  try {
-    const userProfile = await UserProfile.findOne({ user: userId });
+//   try {
+//     const userProfile = await UserProfile.findOne({ user: userId });
 
-    if (!userProfile) {
-      return next(new createError("user profile not found", 404));
-    }
+//     if (!userProfile) {
+//       return next(new createError("user profile not found", 404));
+//     }
 
-    if (profilePicture) {
-      userProfile.profilePicture = profilePicture;
-    }
+//     if (profilePicture) {
+//       userProfile.profilePicture = profilePicture;
+//     }
 
-    await userProfile.save();
+//     await userProfile.save();
 
-    res.status(200).json({
-      status: "success",
-      message: "User profile updated successfully",
-      userProfile,
-    });
-  } catch (err) {
-    console.error("Update userProfile error:", err);
-    next(new createError("internal server error", 500));
-  }
-};
+//     res.status(200).json({
+//       status: "success",
+//       message: "User profile updated successfully",
+//       userProfile,
+//     });
+//   } catch (err) {
+//     console.error("Update userProfile error:", err);
+//     next(new createError("internal server error", 500));
+//   }
+// };
