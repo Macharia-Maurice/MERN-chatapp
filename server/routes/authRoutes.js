@@ -5,7 +5,7 @@ const {
   logout,
   refreshToken,
 } = require("../controllers/authControler");
-const { authenticateToken } = require("../middleware/authMiddleware");
+const { authenticateToken } = require("../middleware/accessTokenAuthMiddleware");
 
 const router = express.Router();
 
