@@ -3,7 +3,7 @@ import { logout, setAuth } from "./features/auth/authSlice";
 import { Mutex } from "async-mutex";
 
 // Base URL for the API
-const baseUrl = "http://localhost:2000";
+const baseUrl = import.meta.env.VITE_BACKEND_URL
 
 // Create a mutex for managing concurrent requests
 const mutex = new Mutex();
