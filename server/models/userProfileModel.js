@@ -4,20 +4,24 @@ const model = mongoose.model;
 
 // Define the UserProfile schema
 const userProfileSchema = new Schema(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    profilePicture: {
-      type: String,
-      default: "", // Adding a default value can be helpful
-    },
-  },
-  {
-    timestamps: true, // Automatically manage createdAt and updatedAt fields
-  }
+	{
+		user: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
+		profilePicture: {
+			type: String,
+			default: "", // Adding a default value can be helpful
+		},
+		bio: {
+			type: String,
+			default: "",
+		},
+	},
+	{
+		timestamps: true, // Automatically manage createdAt and updatedAt fields
+	}
 );
 
 // Create the UserProfile model
