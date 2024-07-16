@@ -24,7 +24,7 @@ const useLogin = () => {
 
         try {
             const response = await login({ email, password }).unwrap();
-            
+
             // Check if response contains the access token
             if (response.accessToken) {
 
