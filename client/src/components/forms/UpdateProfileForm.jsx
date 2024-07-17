@@ -1,21 +1,28 @@
-import useUpdateProfile from "@/hooks/UpdateProfileHook";
+import FormWrapper from "../wrappers/FormWrapper";
 import FormInput from "../wrappers/FormInput";
-import ProfileForm from "../wrappers/profileForm";
+import useUpdateProfile from "@/hooks/UpdateProfileHook";
+
 
 const UpdateProfileForm = () =>{
     return(
-        <ProfileForm
+        <FormWrapper
         title={"Edit Profile"}
         submitBtnTxt={"save"}
         hook={useUpdateProfile}
         >
+            <FormInput
+                name={"profilePicture"}
+                label={"Profile Picture"}
+                type={"file"}
+            />
+
             <FormInput
                 name={"bio"}
                 label={"Bio"}
                 type={"text"}
             />
 
-        </ProfileForm>
+        </FormWrapper>
     )
 }
 
