@@ -63,32 +63,49 @@ exports.getUserProfile = async (req, res, next) => {
 };
 
 
-// update the userProfile
-exports.updateUserProfile = async (req, res, next) => {
-  const userId = req.user.id;
-  console.log("Authenticated User ID:", userId);
-  const { profilePicture } = req.body;
 
+// Update user profile
+exports.updateUserProfile = async (req, res) => {
   try {
-    const userProfile = await UserProfile.findOne({ user: userId });
+    const { bio } = req.body;
 
-    if (!userProfile) {
-      return next(new createError("user profile not found", 404));
+    // Update profile in database
+    const updatedProfile = await UserProfile.findOneAndUpdate(
+      { user: req.user.id },
+      { bio },
+      { new: true }
+    );
+
+    if (!updatedProfile) {
+      return res.status(404).json({ message: "User profile not found" });
     }
 
-    if (profilePicture) {
-      userProfile.profilePicture = profilePicture;
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update user profile picture
+exports.updateUserProfilePicture = async (req, res) => {
+  try {
+    const { profilePicture } = req.file;
+
+    // Update profile picture path or data in database
+    const updatedProfile = await UserProfile.findOneAndUpdate(
+      { user: req.user.id },
+      { profilePicture: req.file.path },
+      { new: true }
+    );
+
+    if (!updatedProfile) {
+      return res.status(404).json({ message: "User profile not found" });
     }
 
-    await userProfile.save();
-
-    res.status(200).json({
-      status: "success",
-      message: "User profile updated successfully",
-      userProfile,
-    });
-  } catch (err) {
-    console.error("Update userProfile error:", err);
-    next(new createError("internal server error", 500));
+    res.json(updatedProfile);
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
