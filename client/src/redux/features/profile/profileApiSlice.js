@@ -17,7 +17,7 @@ const profileApiSlice = baseApi.injectEndpoints({
 				formdata.append("profilePicture", profilePicture);
 
 				return {
-					url: "/profile",
+					url: "/profile/picture",
 					method: "PATCH",
 					body: formdata,
 				};
