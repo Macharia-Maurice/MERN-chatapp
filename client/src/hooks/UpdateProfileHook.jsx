@@ -1,38 +1,41 @@
+// useUpdateProfile.js
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userProfileSchema } from "@/schema/userProfileShema";
-import { useUpdateProfileMutation } from "@/redux/features/profile/profileApiSlice";
+import { ProfileSchema } from "@/schema/ProfileShema";
+import { useUpdateProfileMutation, useUpdateProfilePictureMutation } from "@/redux/features/profile/profileApiSlice";
 
-const useUpdateProfile = ()=>{
-    const form = useForm({
-        resolver:zodResolver(userProfileSchema),
-        defaultValues: {
-            bio:"",
+const useUpdateProfile = () => {
+  const form = useForm({
+    resolver: zodResolver(ProfileSchema),
+    defaultValues: {
+      bio: "",
+      profilePicture: null,
+    },
+  });
 
-        },
-    });
+  const [updateProfile, { isLoading: isUpdatingProfile, error: updateProfileError }] = useUpdateProfileMutation();
+  const [updateProfilePicture, { isLoading: isUpdatingPicture, error: updatePictureError }] = useUpdateProfilePictureMutation();
 
-    const [ profile, {isLoading,error}] = useUpdateProfileMutation()
+  const onSubmit = async (data) => {
+    const { bio, profilePicture } = data;
+    try {
+      if (bio) {
+        await updateProfile({ bio }).unwrap();
+      }
+      if (profilePicture.length > 0) {
+        await updateProfilePicture({ profilePicture: profilePicture[0] }).unwrap();
+      }
+    } catch (err) {
+      console.error("Update profile error:", err);
+    }
+  };
 
-    const onSubmit = async (data) =>{
-        const { bio } = data;
-        const response = await profile({ bio }).unwrap()
-
-        try{
-
-        }catch(err){
-            console.error("Update profile error:", err)
-            console.log(error)
-        }
-    };
-
-    return{
-        handleSubmit : form.handleSubmit(onSubmit),
-        form,
-        isLoading,
-        error
-    };
-}
+  return {
+    handleSubmit: form.handleSubmit(onSubmit),
+    form,
+    isLoading: isUpdatingProfile || isUpdatingPicture,
+    error: updateProfileError || updatePictureError,
+  };
+};
 
 export default useUpdateProfile;
-
