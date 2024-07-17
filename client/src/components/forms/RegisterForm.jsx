@@ -1,10 +1,10 @@
-import useRegister from "@/hooks/RegisterHook";
-import AuthForm from "../wrappers/AuthForm";
+import FormWrapper from "../wrappers/FormWrapper";
 import FormInput from "../wrappers/FormInput";
+import useRegister from "@/hooks/RegisterHook";
 
 const RegisterForm = () => {
   return (
-    <AuthForm
+    <FormWrapper
       title={"Register"}
       subtitle={"Welcome to the Community!"}
       submitBtnTxt={"Register"}
@@ -41,7 +41,7 @@ const RegisterForm = () => {
         type={"password"}
       />
 
-    </AuthForm>
+    </FormWrapper>
   )
 }
 
