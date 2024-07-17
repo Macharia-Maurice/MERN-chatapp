@@ -1,10 +1,10 @@
+import FormWrapper from "../wrappers/FormWrapper";
+import FormInput from "../wrappers/FormInput";
 import useLogin from "@/hooks/LoginHook";
-import AuthForm from "../wrappers/AuthForm"
-import FormInput from "../wrappers/FormInput"
 
 const LoginForm = () => {
     return (
-        <AuthForm
+        <FormWrapper
             title={"Login"}
             subtitle={"Please enter your credentials"}
             submitBtnTxt={"Login"}
@@ -23,7 +23,7 @@ const LoginForm = () => {
                 type={"password"}
             />
 
-        </AuthForm>
+        </FormWrapper>
     )
 }
 
