@@ -5,12 +5,12 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
 // Function to generate access token
 exports.generateAccessToken = (user) => {
-    return jwt.sign({ id: user._id, email: user.email }, accessTokenSecret, { expiresIn: '1h' });
+    return jwt.sign({ id: user.id, email: user.email }, accessTokenSecret, { expiresIn: '1h' });
 };
 
 // Function to generate refresh token
 exports.generateRefreshToken = (user) => {
-    return jwt.sign({ id: user._id, email: user.email }, refreshTokenSecret, { expiresIn: '1d' });
+    return jwt.sign({ id: user.id, email: user.email }, refreshTokenSecret, { expiresIn: '1d' });
 };
 
 // Function to verify refresh token
@@ -25,3 +25,4 @@ exports.verifyRefreshToken = (refreshToken) => {
         });
     });
 };
+
