@@ -1,8 +1,8 @@
 // useUpdateProfile.js
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useUpdateProfileMutation, useUpdateProfilePictureMutation } from "@/redux/features/profiles/profileApiSlice";
 import { ProfileSchema } from "@/schema/ProfileShema";
-import { useUpdateProfileMutation, useUpdateProfilePictureMutation } from "@/redux/features/profile/profileApiSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const useUpdateProfile = () => {
   const form = useForm({
