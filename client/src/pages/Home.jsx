@@ -1,9 +1,12 @@
-const Dashboard = () => {
-  return (
-    <div>
-      se
-    </div>
-  )
-}
+import SideBar from "@/components/common/SideBar";
 
-export default Dashboard
+const Home = () => {
+	return (
+		<div className="min-h-screen bg-gray-300 flex">
+			<SideBar />
+			messagePage
+		</div>
+	);
+};
+
+export default Home;
