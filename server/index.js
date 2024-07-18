@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path")
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middleware/errorHandler");
@@ -10,7 +11,7 @@ const authRouter = require("./routes/authRoutes");
 const userProfileRouter = require("./routes/userprofileRoutes.js")
 
 const app = express();
-
+app.use('/Images', express.static(path.join(__dirname, 'Images')));
 connectDB();
 
 // middlewares
