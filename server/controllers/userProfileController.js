@@ -1,5 +1,7 @@
 const UserProfile = require("../models/userProfileModel");
 const createError = require("../utils/appError");
+const fs = require('fs');
+const path = require('path');
 
 // List all user profiles with pagination
 exports.listAllProfiles = async (req, res, next) => {
@@ -42,7 +44,7 @@ exports.listAllProfiles = async (req, res, next) => {
 // for current logged in user
 exports.getUserProfile = async (req, res, next) => {
   const userId = req.user.id;
-  console.log("Authenticated User ID:", userId);
+  
   try {
     const userProfile = await UserProfile.findOne({ user: userId }).populate(
       "user"
@@ -88,24 +90,28 @@ exports.updateUserProfile = async (req, res) => {
 };
 
 // Update user profile picture
-exports.updateUserProfilePicture = async (req, res) => {
-  try {
-    const { profilePicture } = req.file;
+exports.updateUserProfilePicture = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const userProfile = await UserProfile.findOne({ user: userId });
 
-    // Update profile picture path or data in database
-    const updatedProfile = await UserProfile.findOneAndUpdate(
-      { user: req.user.id },
-      { profilePicture: req.file.path },
-      { new: true }
-    );
+        if (!userProfile) {
+            // Delete the uploaded file if user profile is not found
+            fs.unlinkSync(req.file.path);
+            return res.status(404).json({ message: 'User profile not found' });
+        }
 
-    if (!updatedProfile) {
-      return res.status(404).json({ message: "User profile not found" });
+        userProfile.profilePicture = req.file.path;
+        await userProfile.save();
+
+        res.status(200).json({ message: 'Profile picture updated successfully', userProfile });
+    } catch (err) {
+        console.error(err);
+        // Delete the uploaded file in case of an error
+        if (req.file && req.file.path) {
+            fs.unlinkSync(req.file.path);
+        }
+        next(err);
     }
-
-    res.json(updatedProfile);
-  } catch (error) {
-    console.error("Error updating profile picture:", error);
-    res.status(500).json({ message: "Server error" });
-  }
 };
+
