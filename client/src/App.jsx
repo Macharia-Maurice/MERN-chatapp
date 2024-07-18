@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Dashboard from "./pages/Home";
+import Home from "./pages/Home";
 import RequireAuth from "./redux/features/auth/RequireAuth";
 import Logout from "./pages/auth/Logout";
 import Profile from "./pages/Profile";
+import Chat from "./pages/Chat";
 
 const App = () => {
 	return (
@@ -23,10 +24,10 @@ const App = () => {
 					element={<Register />}
 				/>
 				<Route
-					path="/dashboard"
+					path="/home"
 					element={
 						<RequireAuth>
-							<Dashboard />
+							<Home />
 						</RequireAuth>
 					}
 				/>
@@ -35,6 +36,14 @@ const App = () => {
 					element={
 						<RequireAuth>
 							<Profile />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path="/chat"
+					element={
+						<RequireAuth>
+							<Chat />
 						</RequireAuth>
 					}
 				/>
