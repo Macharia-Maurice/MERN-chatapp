@@ -2,9 +2,19 @@ const express = require("express");
 const { authenticateToken } = require("../middleware/accessTokenAuthMiddleware");
 const { listAllProfiles, getUserProfile, updateUserProfile, updateUserProfilePicture } = require("../controllers/userProfileController");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-
 const router = express.Router();
+const path = require('path')
+
+const storage = multer.diskStorage({
+    destination:(req, file, cb)=>{
+        cb(null, 'Images')
+    },
+    filename:(req, file, cb)=>{
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage: storage})
 
 // List all profiles
 router.get("/", authenticateToken, listAllProfiles);
