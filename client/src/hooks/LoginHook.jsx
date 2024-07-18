@@ -29,7 +29,7 @@ const useLogin = () => {
             if (response.accessToken) {
 
                 dispatch(setAuth());
-                navigate('/dashboard');
+                navigate('/home');
             } else {
                 console.error("Login error: No access token in response", response);
             }
