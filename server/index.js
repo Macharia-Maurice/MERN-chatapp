@@ -11,6 +11,8 @@ const authRouter = require("./routes/authRoutes");
 const userProfileRouter = require("./routes/userprofileRoutes.js")
 
 const app = express();
+
+// serve static files
 app.use('/Images', express.static(path.join(__dirname, 'Images')));
 connectDB();
 
