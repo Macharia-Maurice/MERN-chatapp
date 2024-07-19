@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import RequireAuth from "./redux/features/auth/RequireAuth";
 import Logout from "./pages/auth/Logout";
 import Profile from "./pages/Profile";
-import Chat from "./pages/Chat";
 
 const App = () => {
 	return (
@@ -43,7 +42,7 @@ const App = () => {
 					path="/chat"
 					element={
 						<RequireAuth>
-							<Chat />
+							<Profile />
 						</RequireAuth>
 					}
 				/>
