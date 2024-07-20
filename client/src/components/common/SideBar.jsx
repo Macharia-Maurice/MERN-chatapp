@@ -1,33 +1,100 @@
 import React from "react";
-import { useProfileMeQuery } from "@/redux/features/profiles/profileApiSlice";
 import { ChatItem } from "react-chat-elements";
 import "react-chat-elements/dist/main.css";
 
-const SideBar = () => {
-	const { data, error, isLoading } = useProfileMeQuery();
+const SideBar = ({ setSelectedChat }) => {
+    const chats = [
+        { id: 1, name: "John Doe", profilePicture: "profile1.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
+    ];
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-	if (error) {
-		return <div>Error loading profile</div>;
-	}
-	const { userProfile } = data;
-	const { profilePicture, bio, user } = userProfile;
-	const { first_name, last_name, email } = user;
-
-	return (
-			<ChatItem
-				className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-				avatar={`http://localhost:2000/${profilePicture}`}
-				alt={"profile_pic"}
-				title={first_name}
-				subtitle={"What are you doing?"}
-				date={new Date()}
-				unread={2}
-			/>
-
-	);
+    return (
+        <div className="p-4">
+            {chats.map(chat => (
+                <ChatItem
+                    key={chat.id}
+                    className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                    avatar={`http://localhost:2000/${chat.profilePicture}`}
+                    alt={"profile_pic"}
+                    title={chat.name}
+                    onClick={() => setSelectedChat(chat)}
+                />
+            ))}
+        </div>
+    );
 };
 
 export default SideBar;
