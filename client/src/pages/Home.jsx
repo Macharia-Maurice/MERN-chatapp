@@ -7,11 +7,19 @@ const Home = () => {
     const [selectedChat, setSelectedChat] = useState(null);
 
     // Mock data for chat messages (this could be fetched from an API)
-    const chatMessages = {
-        1: [{ position: 'left', type: 'text', text: 'Hello!', date: new Date() }],
-        2: [{ position: 'right', type: 'text', text: 'Hi there!', date: new Date() }],
-
-    };
+	const chatMessages = {
+		1: [
+			{ position: 'left', type: 'text', text: 'Hello!', date: new Date(), id: 'msg1' },
+			{ position: 'right', type: 'text', text: 'Hi there!', date: new Date(), id: 'msg2' },
+			{ position: 'left', type: 'text', text: 'How are you?', date: new Date(), reply: { photoURL: 'https://facebook.github.io/react/img/logo.svg', title: 'You', message: 'Hi there!' }, id: 'msg3' },
+		],
+		2: [
+			{ position: 'right', type: 'text', text: 'Hello!', date: new Date(), id: 'msg4' },
+			{ position: 'left', type: 'text', text: 'Hi!', date: new Date(), id: 'msg5' },
+		],
+	};
+	
+	
 
     return (
         <div className="flex h-screen">
