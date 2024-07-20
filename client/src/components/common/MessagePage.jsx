@@ -96,7 +96,7 @@ const MessagePage = ({ selectedChat, messages }) => {
 									height: "29 px",
 									position: "absolute",
 									bottom: "-10px",
-									[isRight ? "right" : "left"]: "-10px",
+									[isRight ? "right" : "left"]: "-5px",
 									transform: isRight
 										? "rotate(1deg)"
 										: "rotate(-2deg)",
