@@ -11,15 +11,15 @@ const SideBar = ({ setSelectedChat }) => {
     ];
 
     return (
-        <div className="p-4 flex flex-col h-screen">
+        <div className="p-4 flex flex-col h-screen bg-gray-50">
             {/* Render the user profile at the top of the sidebar */}
             <UserProfile />
             {/* Render each chat item */}
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex-grow overflow-y-auto mt-4">
                 {chats.map(chat => (
                     <ChatItem
                         key={chat.id}
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer mb-2"
+                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer mb-2 p-2 bg-white"
                         avatar={`http://localhost:2000/${chat.profilePicture}`}
                         alt={"profile_pic"}
                         title={chat.name}
