@@ -22,13 +22,13 @@ const Home = () => {
 	
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen bg-gray-100">
             {/* Sidebar: Takes up 1/4 of the screen width */}
             <div className="w-1/4 bg-white border-r overflow-y-auto">
                 <SideBar setSelectedChat={setSelectedChat} />
             </div>
             {/* Message Page: Takes up the remaining 3/4 of the screen width */}
-            <div className="w-3/4 bg-gray-100 flex flex-col">
+            <div className="w-3/4 flex flex-col">
                 {/* Pass selectedChat and messages to MessagePage */}
                 <MessagePage 
                     selectedChat={selectedChat} 
