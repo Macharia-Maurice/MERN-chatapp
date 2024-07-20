@@ -1,99 +1,33 @@
 import React from "react";
-import CardWrapper from "../wrappers/CardWrapper";
-import {
-	LayoutGrid,
-	Library,
-	ListMusic,
-	Mic2,
-	Music,
-	Music2,
-	PlayCircle,
-	Radio,
-	User,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useProfileMeQuery } from "@/redux/features/profiles/profileApiSlice";
+import { ChatItem } from "react-chat-elements";
+import "react-chat-elements/dist/main.css";
 
-export function Sidebar({ className, playlists }) {
+const SideBar = () => {
+	const { data, error, isLoading } = useProfileMeQuery();
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+	if (error) {
+		return <div>Error loading profile</div>;
+	}
+	const { userProfile } = data;
+	const { profilePicture, bio, user } = userProfile;
+	const { first_name, last_name, email } = user;
+
 	return (
-		<CardWrapper className="h-fit">
-			<div className={cn("pb-12", className)}>
-				<div className="space-y-4 py-4">
-					<div className="px-4 py-2">
-						<h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-							Discover
-						</h2>
-						<div className="space-y-1">
-							<Button
-								variant="secondary"
-								size="sm"
-								className="w-full justify-start">
-								<PlayCircle className="mr-2 h-4 w-4" />
-								Listen Now
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<LayoutGrid className="mr-2 h-4 w-4" />
-								Browse
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<Radio className="mr-2 h-4 w-4" />
-								Radio
-							</Button>
-						</div>
-					</div>
-					<div className="px-4 py-2">
-						<h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-							Library
-						</h2>
-						<div className="space-y-1">
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<ListMusic className="mr-2 h-4 w-4" />
-								Playlists
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<Music2 className="mr-2 h-4 w-4" />
-								Songs
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<User className="mr-2 h-4 w-4" />
-								Made for You
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<Mic2 className="mr-2 h-4 w-4" />
-								Artists
-							</Button>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="w-full justify-start">
-								<Library className="mr-2 h-4 w-4" />
-								Albums
-							</Button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</CardWrapper>
-	);
-}
+			<ChatItem
+				className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+				avatar={`http://localhost:2000/${profilePicture}`}
+				alt={"profile_pic"}
+				title={first_name}
+				subtitle={"What are you doing?"}
+				date={new Date()}
+				unread={2}
+			/>
 
-export default Sidebar;
+	);
+};
+
+export default SideBar;
