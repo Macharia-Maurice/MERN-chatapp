@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProfileMeQuery } from '@/redux/features/profiles/profileApiSlice';
-import { Link } from 'react-router-dom'; // Import Link if you're using React Router
-import { Avatar } from 'react-chat-elements'; // Make sure Avatar is available or use a similar component
+import { Link } from 'react-router-dom';
+import { Avatar } from 'react-chat-elements';
 
 const UserProfile = () => {
     const { data, error, isLoading } = useProfileMeQuery();
@@ -14,16 +14,15 @@ const UserProfile = () => {
 
     return (
         <div className="flex items-center p-4 mb-4 border-b border-gray-300">
+            <Link to="/profile">
             <Avatar
                 src={`http://localhost:2000/${profilePicture}`}
                 alt={`${first_name} ${last_name}`}
                 size="large"
                 type='circle'
             />
-            <div className="ml-3">
-                <div className="font-bold">{first_name} {last_name}</div>
-                <Link to="/profile" className="text-blue-500">View Profile</Link>
-            </div>
+            </Link>
+                
         </div>
     );
 };
