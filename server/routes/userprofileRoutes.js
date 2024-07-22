@@ -16,16 +16,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage})
 
-// List all profiles
-router.get("/", authenticateToken, listAllProfiles);
 
-// Update user profile
-router.patch("/", authenticateToken, updateUserProfile);
+//protect routes
+router.use(authenticateToken)
+
+router.route('/')
+    // List all profiles
+    .get(listAllProfiles)
+    // Update user profile
+    .patch(updateUserProfile);
 
 // Update user profile picture
-router.patch("/picture", authenticateToken, upload.single("profilePicture"), updateUserProfilePicture);
+router.patch("/picture", upload.single("profilePicture"), updateUserProfilePicture);
 
 // Get current logged in user profile
-router.get("/me", authenticateToken, getUserProfile);
+router.get("/me", getUserProfile);
+
+
 
 module.exports = router;
