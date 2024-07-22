@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChatItem } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
-import UserProfile from './UserProfile'; // Ensure correct path
+import UserHeader from './UserHeader'; // Ensure correct path
 
 const SideBar = ({ setSelectedChat }) => {
     const chats = [
@@ -13,7 +13,7 @@ const SideBar = ({ setSelectedChat }) => {
     return (
         <div className="p-4 flex flex-col h-screen bg-gray-50">
             {/* Render the user profile at the top of the sidebar */}
-            <UserProfile />
+            <UserHeader />
             {/* Render each chat item */}
             <div className="flex-grow overflow-y-auto mt-4">
                 {chats.map(chat => (
