@@ -18,6 +18,10 @@ const userProfileSchema = new Schema(
 			type: String,
 			default: "",
 		},
+		lastActive: {
+			type: Date,
+			default: Date.now,
+		},
 	},
 	{
 		timestamps: true, // Automatically manage createdAt and updatedAt fields
