@@ -23,21 +23,12 @@ const UserHeader = () => {
                 />
             </Link>
             <div className="flex items-center space-x-4">
-                <Link to="/all-users">
+                <Link to="#">
                     <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
                         New Chat
                     </button>
                 </Link>
-                <Link to="/settings">
-                    <button className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors duration-300">
-                        Settings
-                    </button>
-                </Link>
-                <Link to="/logout">
-                    <button className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300">
-                        Logout
-                    </button>
-                </Link>
+
             </div>
         </div>
     );
