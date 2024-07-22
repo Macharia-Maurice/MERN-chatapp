@@ -3,7 +3,7 @@ import UpdateProfileForm from "@/components/forms/UpdateProfileForm";
 import useResponsiveDialog from "@/hooks/ResponsiveDialogHook";
 import { ResponsiveDialog } from "@/components/wrappers/ResponsiveDialog";
 import { useProfileMeQuery } from "@/redux/features/profiles/profileApiSlice";
-import Logout from "./auth/Logout";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
 	const {
@@ -42,7 +42,9 @@ const Profile = () => {
 					<div>
 						<h1 className="text-2xl font-bold">{`${first_name} ${last_name}`}</h1>
 						<p className="text-gray-600">{email}</p>
-						<Button onClick={openEditProfileDialog} className="mt-2">
+						<Button
+							onClick={openEditProfileDialog}
+							className="mt-2">
 							Edit Profile
 						</Button>
 					</div>
@@ -52,6 +54,9 @@ const Profile = () => {
 				<h2 className="text-lg font-semibold">Bio</h2>
 				<p className="text-gray-700">{bio}</p>
 			</div>
+			<Link to={"/logout"}>
+				<Button variant="destructive">Logout</Button>
+			</Link>
 
 			<ResponsiveDialog
 				title="Edit Profile"
