@@ -1,7 +1,7 @@
-// // controllers/chatController.js
-// const Chat = require("../models/ChatModel");
-// const Message = require("../models/messageModel")
-// const createError = require("../utils/appError");
+// controllers/chatController.js
+const Chat = require("../models/ChatModel");
+const Message = require("../models/messageModel")
+const createError = require("../utils/appError");
 
 // Create a new chat
 exports.createChat = async (req, res, next) => {
