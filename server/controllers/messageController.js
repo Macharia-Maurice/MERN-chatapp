@@ -62,23 +62,23 @@ exports.getAllMessages = async (req, res, next) => {
 
 
 
-// // Mark message as seen
-// exports.markAsSeen = async (req, res, next) => {
-//   try {
-//     const { messageId } = req.params;
+// Mark message as seen
+exports.markAsSeen = async (req, res, next) => {
+  try {
+    const { messageId } = req.params;
 
-//     const message = await Message.findByIdAndUpdate(messageId, { seen: true }, { new: true });
+    const message = await Message.findByIdAndUpdate(messageId, { seen: true }, { new: true });
 
-//     if (!message) {
-//       return next(new createError("Message not found", 404));
-//     }
+    if (!message) {
+      return next(new createError("Message not found", 404));
+    }
 
-//     res.status(200).json({
-//       status: "success",
-//       message,
-//     });
-//   } catch (err) {
-//     console.error("Error marking message as seen:", err);
-//     next(new createError("Internal server error", 500));
-//   }
-// };
+    res.status(200).json({
+      status: "success",
+      message,
+    });
+  } catch (err) {
+    console.error("Error marking message as seen:", err);
+    next(new createError("Internal server error", 500));
+  }
+};
