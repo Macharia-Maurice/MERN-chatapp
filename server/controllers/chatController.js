@@ -28,24 +28,24 @@ exports.createChat = async (req, res, next) => {
   }
 };
 
-// // Get all chats for a user
-// exports.getUserChats = async (req, res, next) => {
-//   try {
-//     const userId = req.user.id;
-//     const chats = await Chat.find({ members: userId })
-//       .populate("members", "user")
-//       .populate("lastMessage")
-//       .sort({ updatedAt: -1 });
+// Get all chats for a user
+exports.getUserChats = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const chats = await Chat.find({ members: userId })
+      .populate("members", "user")
+      .populate("lastMessage")
+      .sort({ updatedAt: -1 });
 
-//     res.status(200).json({
-//       status: "success",
-//       chats,
-//     });
-//   } catch (err) {
-//     console.error("Error getting user chats:", err);
-//     next(new createError("Internal server error", 500));
-//   }
-// };
+    res.status(200).json({
+      status: "success",
+      chats,
+    });
+  } catch (err) {
+    console.error("Error getting user chats:", err);
+    next(new createError("Internal server error", 500));
+  }
+};
 
 // // Get a single chat
 // exports.getChat = async (req, res, next) => {
