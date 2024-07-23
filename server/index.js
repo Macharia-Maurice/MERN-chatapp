@@ -1,46 +1,58 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path")
+const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const http = require("http");
+
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions.js");
 const connectDB = require("./config/DBConnect.js");
 const authRouter = require("./routes/authRoutes");
-const userProfileRouter = require("./routes/userprofileRoutes.js")
+const userProfileRouter = require("./routes/userProfileRoutes.js");
+const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoutes");
+const integrateWsServer = require("./websocket/wsHandler");
 
 const app = express();
 
-// serve static files
+// Serve static files
 app.use('/Images', express.static(path.join(__dirname, 'Images')));
 connectDB();
 
-// middlewares
+// Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// routes
+// Routes
 app.use("/auth", authRouter);
-app.use('/profile', userProfileRouter)
+app.use('/profile', userProfileRouter);
+app.use("/chats", chatRoutes);
+app.use("/messages", messageRoutes);
 
-// global error handler
+// Global error handler
 app.use(errorHandler);
 
-// listen to port once connection to mongodb is successful
+// Create an HTTP server
+const server = http.createServer(app);
+
+// Integrate WebSocket server with HTTP server
+integrateWsServer(server);
+
+// Listen to port once connection to MongoDB is successful
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
 
-  // server
+  // Start HTTP server
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 });
 
-// listen for mongodb connection error
+// Listen for MongoDB connection error
 mongoose.connection.on("error", (err) => {
   console.log(err);
 });
-
