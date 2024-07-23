@@ -26,38 +26,38 @@ exports.sendMessage = async (req, res, next) => {
   }
 };
 
-// // Get all messages for a specific chat
-// exports.getAllMessages = async (req, res, next) => {
-//     const { chatId } = req.params;
+// Get all messages for a specific chat
+exports.getAllMessages = async (req, res, next) => {
+    const { chatId } = req.params;
   
-//     try {
-//       // Verify the chat exists
-//       const chat = await Chat.findById(chatId)
-//         .populate("members", "user")
-//         .populate("lastMessage");
+    try {
+      // Verify the chat exists
+      const chat = await Chat.findById(chatId)
+        .populate("members", "user")
+        .populate("lastMessage");
   
-//       if (!chat) {
-//         return next(new createError("Chat not found", 404));
-//       }
+      if (!chat) {
+        return next(new createError("Chat not found", 404));
+      }
   
-//       // Find all messages for the chat
-//       const messages = await Message.find({ chatId })
-//         .populate("sender", "user") // Populate sender details
-//         .populate("replyTo", "content sender") // Populate replyTo details if needed
-//         .sort({ createdAt: 1 }); // Sort messages by creation date, oldest first
+      // Find all messages for the chat
+      const messages = await Message.find({ chatId })
+        .populate("sender", "user") // Populate sender details
+        .populate("replyTo", "content sender") // Populate replyTo details if needed
+        .sort({ createdAt: 1 }); // Sort messages by creation date, oldest first
   
-//       res.status(200).json({
-//         status: "success",
-//         data: {
-//           chat,
-//           messages,
-//         },
-//       });
-//     } catch (err) {
-//       console.error("Error fetching messages:", err);
-//       next(new createError("Internal server error", 500));
-//     }
-//   };
+      res.status(200).json({
+        status: "success",
+        data: {
+          chat,
+          messages,
+        },
+      });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      next(new createError("Internal server error", 500));
+    }
+  };
 
 
 
