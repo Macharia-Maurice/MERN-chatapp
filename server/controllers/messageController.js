@@ -3,28 +3,28 @@ const Message = require("../models/messageModel");
 const Chat = require("../models/ChatModel");
 const createError = require("../utils/appError");
 
-// // Send a message
-// exports.sendMessage = async (req, res, next) => {
-//   try {
-//     const { chatId, type, content, replyTo } = req.body;
-//     const sender = req.user.id;
+// Send a message
+exports.sendMessage = async (req, res, next) => {
+  try {
+    const { chatId, type, content, replyTo } = req.body;
+    const sender = req.user.id;
 
-//     const message = new Message({ chatId, sender, type, content, replyTo });
-//     await message.save();
+    const message = new Message({ chatId, sender, type, content, replyTo });
+    await message.save();
 
-//     // Update last message in chat
-//     const chat = await Chat.findByIdAndUpdate(chatId, { lastMessage: message._id }, { new: true });
+    // Update last message in chat
+    const chat = await Chat.findByIdAndUpdate(chatId, { lastMessage: message._id }, { new: true });
 
-//     res.status(201).json({
-//       status: "success",
-//       message,
-//       chat,
-//     });
-//   } catch (err) {
-//     console.error("Error sending message:", err);
-//     next(new createError("Internal server error", 500));
-//   }
-// };
+    res.status(201).json({
+      status: "success",
+      message,
+      chat,
+    });
+  } catch (err) {
+    console.error("Error sending message:", err);
+    next(new createError("Internal server error", 500));
+  }
+};
 
 // // Get all messages for a specific chat
 // exports.getAllMessages = async (req, res, next) => {
