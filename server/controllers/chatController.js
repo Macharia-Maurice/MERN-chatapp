@@ -3,30 +3,30 @@
 // const Message = require("../models/messageModel")
 // const createError = require("../utils/appError");
 
-// // Create a new chat
-// exports.createChat = async (req, res, next) => {
-//   try {
-//     const { members } = req.body;
+// Create a new chat
+exports.createChat = async (req, res, next) => {
+  try {
+    const { members } = req.body;
 
-//     // Check if chat with same members already exists
-//     let chat = await Chat.findOne({ members: { $all: members, $size: members.length } });
+    // Check if chat with same members already exists
+    let chat = await Chat.findOne({ members: { $all: members, $size: members.length } });
 
-//     if (chat) {
-//       return res.status(200).json({ status: "success", chat });
-//     }
+    if (chat) {
+      return res.status(200).json({ status: "success", chat });
+    }
 
-//     chat = new Chat({ members });
-//     await chat.save();
+    chat = new Chat({ members });
+    await chat.save();
 
-//     res.status(201).json({
-//       status: "success",
-//       chat,
-//     });
-//   } catch (err) {
-//     console.error("Error creating chat:", err);
-//     next(new createError("Internal server error", 500));
-//   }
-// };
+    res.status(201).json({
+      status: "success",
+      chat,
+    });
+  } catch (err) {
+    console.error("Error creating chat:", err);
+    next(new createError("Internal server error", 500));
+  }
+};
 
 // // Get all chats for a user
 // exports.getUserChats = async (req, res, next) => {
