@@ -10,10 +10,10 @@ const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions.js");
 const connectDB = require("./config/DBConnect.js");
 const authRouter = require("./routes/authRoutes");
-const userProfileRouter = require("./routes/userProfileRoutes.js");
+const userProfileRouter = require("./routes/userprofileRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-const integrateWsServer = require("./websocket/wsHandler");
+const integrateWsServer = require("./websockets/wsHandler");
 
 const app = express();
 
