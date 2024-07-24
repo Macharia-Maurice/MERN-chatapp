@@ -1,5 +1,5 @@
 // controllers/chatController.js
-const Chat = require("../models/ChatModel");
+const Chat = require("../models/chatModel");
 const Message = require("../models/messageModel")
 const createError = require("../utils/appError");
 
@@ -9,7 +9,7 @@ exports.createChat = async (req, res, next) => {
     const { members } = req.body;
 
     // Check if chat with same members already exists
-    let chat = await Chat.findOne({ members: { $all: members, $size: members.length } });
+    let chat = await Chat.findOne({ members: { $all: members, $size: members.length } }).populate("lastMessage");
 
     if (chat) {
       return res.status(200).json({ status: "success", chat });
