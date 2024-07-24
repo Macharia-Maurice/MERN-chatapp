@@ -16,7 +16,7 @@ exports.listAllProfiles = async (req, res, next) => {
 
     // Find profiles
     const profiles = await UserProfile.find()
-      .populate("user", "username email") // Populate only necessary fields
+      .populate("user", "email first_name last_name") // Populate only necessary fields
       .select("-__v") // Exclude the version key
       .skip(skip)
       .limit(limit)
