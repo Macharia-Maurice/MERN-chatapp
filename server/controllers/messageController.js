@@ -1,6 +1,6 @@
 // controllers/messageController.js
 const Message = require("../models/messageModel");
-const Chat = require("../models/ChatModel");
+const Chat = require("../models/chatModel");
 const createError = require("../utils/appError");
 
 // Send a message
