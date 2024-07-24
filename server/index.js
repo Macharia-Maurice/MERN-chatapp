@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/auth", authRouter);
-app.use('/profile', userProfileRouter);
+app.use('/profiles', userProfileRouter);
 app.use("/chats", chatRoutes);
 app.use("/messages", messageRoutes);
 
