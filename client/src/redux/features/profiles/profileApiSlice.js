@@ -25,12 +25,12 @@ const profileApiSlice = baseApi.injectEndpoints({
 		}),
 
 		listAllProfiles: builder.query({
-			query: () =>"/profile",
+			query: () =>"/profiles",
 
 		}),
 
 		profileMe: builder.query({
-			query: ()=>"/profile/me",
+			query: ()=>"/profiles/me",
 		}),
 
 
