@@ -1,18 +1,27 @@
 // routes/chatRoutes.js
 const express = require("express");
-const { authenticateToken } = require("../middleware/accessTokenAuthMiddleware");
-const { createChat, getUserChats, getChat } = require("../controllers/chatController");
+const {
+	authenticateToken,
+} = require("../middleware/accessTokenAuthMiddleware");
+const {
+	createChat,
+	getUserChats,
+	getChat,
+} = require("../controllers/chatController");
 
 const router = express.Router();
 
 // Protect all routes
 router.use(authenticateToken);
 
-// Create a new chat
-router.post("/", createChat);
-// Get all chats for a user
-router.get("/", getUserChats);
+router
+	.route("/")
+	// Create a new chat
+	.post(createChat)
+	// Get all chats for user (current logged in)
+	.get(getUserChats);
+
 // Get a single chat
-router.get("/:id", getChat);
+router.get("/:chat_id", getChat);
 
 module.exports = router;
