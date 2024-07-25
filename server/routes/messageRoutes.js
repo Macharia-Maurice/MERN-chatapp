@@ -1,20 +1,20 @@
 // routes/messageRoutes.js
 const express = require("express");
 const { authenticateToken } = require("../middleware/accessTokenAuthMiddleware");
-const { sendMessage, getAllMessages, markAsSeen } = require("../controllers/messageController");
+const { sendMessage, getAllMessages, seenBy } = require("../controllers/messageController");
 
 const router = express.Router();
 
 // Protect all routes
 router.use(authenticateToken);
 
-//send msg
-router.post("/", sendMessage);
+// Send a message to a specific chat
+router.post("/:chat_id", sendMessage);
 
-//get all messages for a chat
-router.get("/:chatId", getAllMessages);
+// Get all messages for a specific chat
+router.get("/:chat_id", getAllMessages);
 
-//mark message as seen
-router.patch("/:messageId/seen", markAsSeen);
+// Mark message as seen
+router.patch("/:message_id/seen", seenBy);
 
 module.exports = router;
