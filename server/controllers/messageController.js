@@ -8,7 +8,7 @@ const createError = require("../utils/appError");
 exports.sendMessage = async (req, res, next) => {
   try {
     const chatId = req.params.chat_id;
-    const { type, content, replyTo } = req.body;
+    const { text, replyTo } = req.body; // Adjusted to use 'text' instead of 'content'
 
     const userId = req.user.id;
     const userProfile = await UserProfile.findOne({ user: userId });
@@ -18,14 +18,19 @@ exports.sendMessage = async (req, res, next) => {
     const chat = await Chat.findById(chatId);
 
     if (!chat) {
-      return next(new createError("Chat not found", 404));
+      return next(createError(404, "Chat not found"));
     }
 
     if (!chat.members.includes(userProfile._id.toString())) {
-      return next(new createError("User is not a member of the chat", 403));
+      return next(createError(403, "User is not a member of the chat"));
     }
 
-    const message = new Message({ chatId, sender, type, content, replyTo });
+    const message = new Message({
+      chatId,
+      sender,
+      text, // Use 'text' from the request body
+      replyTo,
+    });
     await message.save();
 
     // Update last message in chat
@@ -39,7 +44,7 @@ exports.sendMessage = async (req, res, next) => {
     });
   } catch (err) {
     console.error("Error sending message:", err);
-    next(new createError("Internal server error", 500));
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -120,5 +125,34 @@ exports.seenBy = async (req, res, next) => {
   } catch (err) {
     console.error("Error marking message as seen:", err);
     next(new createError("Internal server error", 500));
+  }
+};
+
+// Delete all messages in a chat
+exports.deleteAllMessages = async (req, res, next) => {
+  const chatId = req.params.chat_id;
+  try {
+    // Verify the chat exists
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      return next(createError(404, "Chat not found"));
+    }
+
+    // Verify the user is a member of the chat
+    const userId = req.user.id;
+    const userProfile = await UserProfile.findOne({ user: userId });
+
+    if (!chat.members.includes(userProfile._id.toString())) {
+      return next(createError(403, "User is not a member of the chat"));
+    }
+
+    // Delete all messages associated with the chat
+    await Message.deleteMany({ chatId: chatId });
+
+    res.status(204).send(); // No content to send
+  } catch (err) {
+    console.error("Error deleting messages:", err);
+    next(createError(500, "Internal server error"));
   }
 };
