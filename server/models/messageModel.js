@@ -22,20 +22,9 @@ const messageSchema = new Schema(
 				ref: "UserProfile",
 			},
 		],
-		type: {
+		text:{
 			type: String,
-			enum: ["text", "image", "video", "audio", "document", "location"],
-			required: true,
-		},
-		content: {
-			text: { type: String, trim: true },
-			mediaUrl: String,
-			fileName: String,
-			mimeType: String,
-			location: {
-				latitude: Number,
-				longitude: Number,
-			},
+			default: "",
 		},
 		replyTo: {
 			type: mongoose.Schema.Types.ObjectId,
