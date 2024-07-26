@@ -4,7 +4,6 @@ import useResponsiveDialog from "@/hooks/ResponsiveDialogHook";
 import { ResponsiveDialog } from "@/components/wrappers/ResponsiveDialog";
 import { useProfileMeQuery } from "@/redux/features/profiles/profileApiSlice";
 import { Link } from "react-router-dom";
-import TestMessage from "@/components/common/TestMessage";
 const Profile = () => {
 	const {
 		isDialogOpen: isEditProfileDialogOpen,
@@ -66,7 +65,6 @@ const Profile = () => {
 			>
 				<UpdateProfileForm />
 			</ResponsiveDialog>
-			<TestMessage />
 		</div>
 	);
 };
