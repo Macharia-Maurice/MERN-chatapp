@@ -1,20 +1,30 @@
+// src/redux/features/messages/messageApiSlice.js
 import { baseApi } from "@/redux/baseApiSlice";
 
 const messageApiSlice = baseApi.injectEndpoints({
     overrideExisting: true,
     endpoints: (builder) => ({
-        //create a message
         createMessage: builder.mutation({
             query: ({ chat_id, message }) => ({
-                url: `/chats/${chat_id}/messages`,
+                url: `/messages/${chat_id}`,
                 method: "POST",
                 body: { message },
             }),
         }),
-
-        //get all messages for a chat
-        getMessages: builder.query({
-            query: (chat_id) => `/chats/${chat_id}/messages`,
+        getAllMessages: builder.query({
+            query: (chat_id) => `/messages/${chat_id}`,
+        }),
+        seenBy: builder.mutation({
+            query: (message_id) => ({
+                url: `/messages/${message_id}/seen`,
+                method: "PATCH",
+            }),
         }),
     }),
 });
+
+export const {
+    useCreateMessageMutation,
+    useGetAllMessagesQuery,
+    useSeenByMutation
+} = messageApiSlice;
