@@ -1,33 +1,29 @@
-import React from 'react';
-import { ChatItem } from 'react-chat-elements';
-import 'react-chat-elements/dist/main.css';
-import UserHeader from './UserHeader';
+// src/components/common/SideBar.jsx
+import React from "react";
+import { ChatItem } from "react-chat-elements";
+import "react-chat-elements/dist/main.css";
+import UserHeader from "./UserHeader";
 
-const SideBar = ({ setSelectedChat }) => {
-
-        // fetch chats from API
-    const chats = [
-        { id: 1, name: "John Doe", profilePicture: "profile1.png" },
-        { id: 2, name: "Jane Smith", profilePicture: "profile2.png" },
-    ];
+const SideBar = ({ setSelectedChat, chats }) => {
+    if (!Array.isArray(chats)) {
+        return <div>No chats available</div>;
+    }
 
     return (
-        <div className="p-4 flex flex-col h-screen bg-gray-50">
-            {/* Render the userHeader at the top of the sidebar */}
+        <div>
             <UserHeader />
-            {/* Render each chat item */}
-            <div className="flex-grow overflow-y-auto mt-4">
-                {chats.map(chat => (
-                    <ChatItem
-                        key={chat.id}
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer mb-2 p-2 bg-white"
-                        avatar={`http://localhost:2000/${chat.profilePicture}`}
-                        alt={"profile_pic"}
-                        title={chat.name}
-                        onClick={() => setSelectedChat(chat)} // Set selected chat on click
-                    />
-                ))}
-            </div>
+            {chats.map((chat) => (
+                <ChatItem
+                    key={chat._id}
+                    title={chat.otherMember.name || "Chat"}
+                    subtitle={chat.lastMessage?.content || "No messages"}
+                    date={new Date(chat.updatedAt)}
+                    unread={chat.unreadMessagesCount || 3}
+                    avatar={`http://localhost:2000/${chat.otherMember.profilePicture}`}
+                    alt="profile"
+                    onClick={() => setSelectedChat(chat)}
+                />
+            ))}
         </div>
     );
 };
