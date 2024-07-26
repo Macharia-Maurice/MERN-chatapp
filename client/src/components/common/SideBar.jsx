@@ -16,7 +16,7 @@ const SideBar = ({ setSelectedChat, chats }) => {
                 <ChatItem
                     key={chat._id}
                     title={chat.otherMember.name || "Chat"}
-                    subtitle={chat.lastMessage?.content || "No messages"}
+                    subtitle={chat.lastMessage?.text || "No messages"}
                     date={new Date(chat.updatedAt)}
                     unread={chat.unreadMessagesCount || 3}
                     avatar={`http://localhost:2000/${chat.otherMember.profilePicture}`}
