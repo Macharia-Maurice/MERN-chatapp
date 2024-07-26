@@ -28,8 +28,9 @@ exports.sendMessage = async (req, res, next) => {
     const message = new Message({
       chatId,
       sender,
-      text, // Use 'text' from the request body
+      text,
       replyTo,
+      position: "right", // Messages sent by the current user are on the right
     });
     await message.save();
 
@@ -58,25 +59,42 @@ exports.getAllMessages = async (req, res, next) => {
       .populate("lastMessage");
 
     if (!chat) {
-      return next(new createError("Chat not found", 404));
+      return next(createError(404, "Chat not found"));
+    }
+
+    // Retrieve the user profile of the authenticated user
+    const userId = req.user.id;
+    const userProfile = await UserProfile.findOne({ user: userId });
+
+    if (!userProfile) {
+      return next(createError(404, "User profile not found"));
     }
 
     // Find all messages for the chat
     const messages = await Message.find({ chatId: chatId })
       .populate("sender", "user") // Populate sender details
-      .populate("replyTo", "content sender") // Populate replyTo details if needed
+      .populate("replyTo", "text sender") // Populate replyTo details if needed
       .sort({ createdAt: 1 }); // Sort messages by creation date, oldest first
+
+    // Add position field to each message
+    const updatedMessages = messages.map((message) => {
+      const position = message.sender.equals(userProfile._id) ? "right" : "left";
+      return {
+        ...message.toObject(),
+        position,
+      };
+    });
 
     res.status(200).json({
       status: "success",
       data: {
         chat,
-        messages,
+        messages: updatedMessages,
       },
     });
   } catch (err) {
     console.error("Error fetching messages:", err);
-    next(new createError("Internal server error", 500));
+    next(createError(500, "Internal server error"));
   }
 };
 
