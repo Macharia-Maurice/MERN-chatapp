@@ -11,10 +11,11 @@ const MessagePage = ({ selectedChat, messages }) => {
 
     const [createMessage] = useCreateMessageMutation();
 
-    // Log selectedChat for debugging
+    // Log selectedChat and messages for debugging
     useEffect(() => {
         console.log("Selected Chat:", selectedChat);
-    }, [selectedChat]);
+        console.log("Messages:", messages);
+    }, [selectedChat, messages]);
 
     // Handle sending a new message
     const handleSend = async () => {
@@ -35,7 +36,7 @@ const MessagePage = ({ selectedChat, messages }) => {
         };
 
         try {
-            await createMessage({
+            const response = await createMessage({
                 chat_id: selectedChat._id,
                 ...newMessage,
             }).unwrap();
@@ -43,8 +44,9 @@ const MessagePage = ({ selectedChat, messages }) => {
                 ...prevMessages,
                 {
                     ...newMessage,
+                    _id: response._id, // Add _id from response
                     sender: { _id: 'currentUserId' }, // Update as needed
-                    position: 'right'
+                    position: 'right' // This is for the current user, adjust as needed
                 },
             ]);
             setInput("");
@@ -95,12 +97,13 @@ const MessagePage = ({ selectedChat, messages }) => {
                     {messageList.length > 0 ? (
                         messageList.map((message) => {
                             console.log("Rendering Message:", message);
-                            const isRight = message.sender._id === 'currentUserId'; // Adjust this check
+                            const isRight = message.position === 'right'; // Use the position property from message
                             const backgroundColor = isRight ? "#3b82f6" : "#e5e7eb";
                             return (
                                 <MessageBox
                                     key={message._id}
-                                    position={isRight ? "right" : "left"}
+                                    position={message.position} // Use the position property from message
+                                    type={"text"}
                                     text={message.text} // Ensure text is properly set
                                     date={new Date(message.createdAt).toLocaleString()} // Format date as needed
                                     notch={true}
