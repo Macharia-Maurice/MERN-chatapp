@@ -5,12 +5,13 @@ const chatApiSlice = baseApi.injectEndpoints({
     overrideExisting: true,
     endpoints: (builder) => ({
         createChat: builder.mutation({
-            query: ({ members }) => ({
+            query: ({ profileId }) => ({
                 url: "/chats",
                 method: "POST",
-                body: { members },
+                body: { profileId },
             }),
         }),
+        
         getChat: builder.query({
             query: (chat_id) => `/chats/${chat_id}`,
         }),
