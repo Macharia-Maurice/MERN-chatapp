@@ -7,15 +7,39 @@ const createError = require("../utils/appError");
 // Create a new chat
 exports.createChat = async (req, res, next) => {
   try {
-    const { members } = req.body;
+    const { profileId } = req.body; // Expecting the profile ID of the other user
 
-    // Check if chat with same members already exists
-    let chat = await Chat.findOne({ members: { $all: members, $size: members.length } }).populate("lastMessage").select("-__v");
+    if (!profileId) {
+      return next(createError("Profile ID is required", 400));
+    }
+
+    const userId = req.user.id; // Get the current logged-in user's ID
+
+    // Find the UserProfile for the current user
+    const currentUserProfile = await UserProfile.findOne({ user: userId });
+    if (!currentUserProfile) {
+      return next(createError("Current user's profile not found", 404));
+    }
+
+    // Verify that the provided profileId exists in UserProfile
+    const otherUserProfile = await UserProfile.findById(profileId);
+    if (!otherUserProfile) {
+      return next(createError("Other user profile not found", 404));
+    }
+
+    // Create a list of members including the current user and the other user
+    const members = [currentUserProfile._id, otherUserProfile._id];
+
+    // Check if a chat with these members already exists
+    let chat = await Chat.findOne({
+      members: { $all: members, $size: members.length }
+    }).populate("lastMessage").select("-__v");
 
     if (chat) {
       return res.status(200).json({ status: "success", chat });
     }
 
+    // Create a new chat
     chat = new Chat({ members });
     await chat.save();
 
