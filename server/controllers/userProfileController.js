@@ -5,39 +5,42 @@ const path = require("path");
 
 // List all user profiles with pagination
 exports.listAllProfiles = async (req, res, next) => {
-	try {
-		// Pagination
-		const page = parseInt(req.query.page, 10) || 1;
-		const limit = parseInt(req.query.limit, 10) || 10;
-		const skip = (page - 1) * limit;
+    try {
+        // Pagination
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const skip = (page - 1) * limit;
 
-		// Count total profiles
-		const total = await UserProfile.countDocuments();
+        // Get the current user ID from the request (assuming it's available in req.user.id)
+        const currentUserId = req.user.id;
 
-		// Find profiles
-		const profiles = await UserProfile.find()
-			.populate("user", "email first_name last_name") // Populate only necessary fields
-			.select("-__v") // Exclude the version key
-			.skip(skip)
-			.limit(limit)
-			.sort({ createdAt: -1 }); // Sort by creation date, newest first
+        // Count total profiles excluding the current user
+        const total = await UserProfile.countDocuments({ user: { $ne: currentUserId } });
 
-		// Calculate total pages
-		const totalPages = Math.ceil(total / limit);
+        // Find profiles excluding the current user
+        const profiles = await UserProfile.find({ user: { $ne: currentUserId } })
+            .populate("user", "email first_name last_name") // Populate only necessary fields
+            .select("-__v") // Exclude the version key
+            .skip(skip)
+            .limit(limit)
+            .sort({ createdAt: -1 }); // Sort by creation date, newest first
 
-		res.status(200).json({
-			status: "success",
-			data: {
-				profiles,
-				currentPage: page,
-				totalPages,
-				totalProfiles: total,
-			},
-		});
-	} catch (err) {
-		console.error("Error listing profiles:", err);
-		next(new createError("Internal server error", 500));
-	}
+        // Calculate total pages
+        const totalPages = Math.ceil(total / limit);
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                profiles,
+                currentPage: page,
+                totalPages,
+                totalProfiles: total,
+            },
+        });
+    } catch (err) {
+        console.error("Error listing profiles:", err);
+        next(new createError("Internal server error", 500));
+    }
 };
 
 // for current logged in user
