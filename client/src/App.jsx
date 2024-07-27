@@ -5,6 +5,7 @@ import Home from "./pages/HomePage";
 import RequireAuth from "./redux/features/auth/RequireAuth";
 import Logout from "./pages/auth/Logout";
 import Profile from "./pages/ProfileViewPage";
+import ProfilesList from "./components/common/ProfilesList";
 
 const App = () => {
 	return (
@@ -35,6 +36,14 @@ const App = () => {
 					element={
 						<RequireAuth>
 							<Profile />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path="/profile_list"
+					element={
+						<RequireAuth>
+							<ProfilesList />
 						</RequireAuth>
 					}
 				/>
