@@ -31,10 +31,6 @@ const messageSchema = new Schema(
 			ref: "Message",
 			default: null,
 		},
-		position:{
-			type:String,
-			default:"",
-		},
 	},
 	{ timestamps: true } // Automatically manage createdAt and updatedAt fields
 );
