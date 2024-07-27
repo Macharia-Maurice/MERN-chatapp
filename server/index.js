@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const http = require("http");
+const http = require('http');
 
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions.js");
@@ -13,9 +13,9 @@ const authRouter = require("./routes/authRoutes");
 const userProfileRouter = require("./routes/userprofileRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-const integrateWsServer = require("./websockets/wsHandler");
 
 const app = express();
+const server = http.createServer(app);
 
 // Serve static files
 app.use('/Images', express.static(path.join(__dirname, 'Images')));
@@ -34,12 +34,6 @@ app.use("/messages", messageRoutes);
 
 // Global error handler
 app.use(errorHandler);
-
-// Create an HTTP server
-const server = http.createServer(app);
-
-// Integrate WebSocket server with HTTP server
-integrateWsServer(server);
 
 // Listen to port once connection to MongoDB is successful
 mongoose.connection.once("open", () => {
