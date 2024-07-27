@@ -87,14 +87,8 @@ exports.getUserChats = async (req, res, next) => {
         member => member.user && member.user._id.toString() !== userId
       );
 
-      // Debugging logs
-      console.log("User ID:", userId);
-      console.log("Chat Members:", chat.members);
-      console.log("Other Member Profile:", otherMemberProfile);
-
       // Ensure otherMemberProfile exists before accessing its properties
       if (!otherMemberProfile) {
-        console.error("Other member profile not found for chat:", chat._id);
         return null;
       }
 
