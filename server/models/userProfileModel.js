@@ -21,7 +21,10 @@ const userProfileSchema = new Schema(
 		online: {
 			type: Boolean,
 			default: false,
-			lastSeen: { type: Date },
+		},
+		lastSeen: {
+			type: Date,
+			default: null,
 		},
 	},
 	{
