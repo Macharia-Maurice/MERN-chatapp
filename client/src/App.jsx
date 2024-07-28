@@ -4,7 +4,8 @@ import Register from "./pages/auth/Register";
 import Home from "./pages/HomePage";
 import RequireAuth from "./redux/features/auth/RequireAuth";
 import Logout from "./pages/auth/Logout";
-import Profile from "./pages/ProfileViewPage";
+import MyProfileView from "./pages/MyProfileViewPage";
+import UserProfileView from "./pages/UserProfileViewPage";
 import ProfilesList from "./components/common/ProfilesList";
 
 const App = () => {
@@ -35,7 +36,15 @@ const App = () => {
 					path="/profile"
 					element={
 						<RequireAuth>
-							<Profile />
+							<MyProfileView />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path="/profile/:profile_id"
+					element={
+						<RequireAuth>
+							<UserProfileView />
 						</RequireAuth>
 					}
 				/>
