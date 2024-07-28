@@ -1,9 +1,9 @@
-// MessagePage.js
 import React, { useState, useEffect, useRef } from "react";
 import { MessageBox } from "react-chat-elements";
 import "react-chat-elements/dist/main.css";
 import { useCreateMessageMutation } from "@/redux/features/messages/messageApiSlice";
 import io from "socket.io-client";
+import ChatHeader from './ChatHeader'; // Import the ChatHeader component
 
 const socket = io(import.meta.env.VITE_BACKEND_URL);
 
@@ -99,6 +99,7 @@ const MessagePage = ({ selectedChat, messages, currentUserId }) => {
 
 	return (
 		<div className="flex flex-col h-full bg-gray-50">
+			<ChatHeader chatId={selectedChat._id} /> {/* Add the ChatHeader component */}
 			<div className="flex-grow overflow-y-auto p-4 shadow rounded-lg bg-gradient-to-b from-blue-50 via-white to-blue-50">
 				<div className="space-y-4">
 					{messageList.length > 0 ? (
