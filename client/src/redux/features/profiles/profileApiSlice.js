@@ -33,6 +33,10 @@ const profileApiSlice = baseApi.injectEndpoints({
 			query: ()=>"/profiles/me",
 		}),
 
+		getUserProfile: builder.query({
+			query: (profile_id)=>`/profiles/${profile_id}`,
+		}),
+
 
 	}),
 });
@@ -41,5 +45,6 @@ export const {
 	useUpdateProfileMutation,
 	useUpdateProfilePictureMutation,
 	useListAllProfilesQuery,
+	useGetUserProfileQuery,
 	useProfileMeQuery,
 } = profileApiSlice;
