@@ -13,9 +13,13 @@ const authRouter = require("./routes/authRoutes");
 const userProfileRouter = require("./routes/userprofileRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const socketIO = require("./socket"); // Import the socketIO function
 
 const app = express();
 const server = http.createServer(app);
+
+// Initialize Socket.IO server
+const io = socketIO(server);
 
 // Serve static files
 app.use('/Images', express.static(path.join(__dirname, 'Images')));

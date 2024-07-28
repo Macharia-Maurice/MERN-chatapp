@@ -69,8 +69,8 @@ exports.login = async (req, res, next) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
-    res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
+  res.cookie("accessToken", accessToken, { httpOnly: true, secure: true , sameSite:  'None' });
+  res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: 'None' });
 
     res.status(201).json({
       status: "success",

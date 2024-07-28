@@ -5,7 +5,7 @@ const profileApiSlice = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		updateProfile: builder.mutation({
 			query: ({ bio }) => ({
-				url: "/profile",
+				url: "/profiles",
 				method: "PATCH",
 				body: { bio },
 			}),
@@ -17,7 +17,7 @@ const profileApiSlice = baseApi.injectEndpoints({
 				formdata.append("profilePicture", profilePicture);
 
 				return {
-					url: "/profile/picture",
+					url: "/profiles/picture",
 					method: "PATCH",
 					body: formdata,
 				};
@@ -33,6 +33,10 @@ const profileApiSlice = baseApi.injectEndpoints({
 			query: ()=>"/profiles/me",
 		}),
 
+		getUserProfile: builder.query({
+			query: (profile_id)=>`/profiles/${profile_id}`,
+		}),
+
 
 	}),
 });
@@ -41,5 +45,6 @@ export const {
 	useUpdateProfileMutation,
 	useUpdateProfilePictureMutation,
 	useListAllProfilesQuery,
+	useGetUserProfileQuery,
 	useProfileMeQuery,
 } = profileApiSlice;

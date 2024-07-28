@@ -4,7 +4,7 @@ import useResponsiveDialog from "@/hooks/ResponsiveDialogHook";
 import { ResponsiveDialog } from "@/components/wrappers/ResponsiveDialog";
 import { useProfileMeQuery } from "@/redux/features/profiles/profileApiSlice";
 import { Link } from "react-router-dom";
-const Profile = () => {
+const MyProfileView = () => {
 	const {
 		isDialogOpen: isEditProfileDialogOpen,
 		handleOpenDialog: openEditProfileDialog,
@@ -69,4 +69,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default MyProfileView;

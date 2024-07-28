@@ -18,9 +18,10 @@ const userProfileSchema = new Schema(
 			type: String,
 			default: "",
 		},
-		lastActive: {
-			type: Date,
-			default: Date.now,
+		online: {
+			type: Boolean,
+			default: false,
+			lastSeen: { type: Date },
 		},
 	},
 	{
